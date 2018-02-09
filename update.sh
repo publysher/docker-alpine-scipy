@@ -20,14 +20,14 @@ function build() {
     cat <<EOF > ${dir}/Dockerfile
 FROM ${IMAGE_ROOT}:${base_image}
 
-RUN apk --no-cache add lapack \
+RUN apk --no-cache add lapack libstdc++ \
     && apk --no-cache add --virtual .builddeps g++ gcc gfortran musl-dev lapack-dev \
     && pip install scipy==${version} \
     && apk del .builddeps \
     && rm -rf /root/.cache
 EOF
 
-    echo "/${dir}\t${image}" >> build-settings.txt
+    echo "/${dir}	${image_version}" >> build-settings.txt
 
     docker build -t ${image} ${dir}
 
